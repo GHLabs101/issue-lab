@@ -4,6 +4,11 @@ on:
   issues:
     types: [opened]           # Fire only when an issue is first opened
 
+# 👇 NEW — grant write access to issues
+permissions:
+  contents: read      # safest minimal scope
+  issues:   write     # required to create a comment
+
 jobs:
   auto-comment:
     if: contains(github.event.issue.labels.*.name, 'bug') == false
