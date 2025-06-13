@@ -1,0 +1,26 @@
+name: Auto-respond to New Issues
+
+on:
+  issues:
+    types: [opened]           # Fire only when an issue is first opened
+
+jobs:
+  auto-comment:
+    if: contains(github.event.issue.labels.*.name, 'bug') == false
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (no code needed, but best practice)
+        uses: actions/checkout@v4
+
+      - name: Post welcome comment
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            👋 **Hi @${{ github.event.issue.user.login }}**, thanks for opening this issue!
+
+            Please make sure you've filled out all required sections.  
+            If this is a **bug**, label the issue with `bug` so our triage bot can prioritize it.  
+            We’ll review and follow up soon. Cheers!
